@@ -48,6 +48,7 @@ for version in "${CHART_VERSIONS[@]}"; do
 
   # Update the index file
   yq -i '(.entries.rancher[] | select(.version == "'"${version}"'")).digest = "'"$(sha256sum "${RELEASE_FOLDER}/rancher-${version}.tgz" | cut -d' ' -f1)"'"' "tmp/${INDEX_FILE}"
+  yq -i 'del((.entries.rancher[] | select(.version == "'"${version}"'")).kubeVersion)' "tmp/${INDEX_FILE}"
 
   INDEX_UPDATE_CONDITIONS+='.version != "'"${version}"'" and '
 

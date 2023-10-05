@@ -5,6 +5,7 @@ pages:
   script:
     - apk add --no-cache yq curl bash
     - ./script.sh
+    - mv index.html public/
   artifacts:
     paths:
       - public

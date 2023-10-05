@@ -2,3 +2,4 @@
 !.gitignore
 !script.sh
 !.gitlab-ci.yml
+!index.html

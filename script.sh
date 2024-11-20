@@ -4,7 +4,7 @@ set -euo pipefail
 REPO_URL="https://releases.rancher.com/server-charts/latest"
 INDEX_FILE="index.yaml"
 RELEASE_FOLDER="public"
-MIN_VERSION_TO_PATCH="2.7"
+MIN_VERSION_TO_PATCH="2.9"
 SKIP_RC_VERSIONS="false"
 
 mkdir -p tmp

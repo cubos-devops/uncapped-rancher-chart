@@ -20,7 +20,7 @@ INDEX_UPDATE_CONDITIONS=""
 
 for version in "${CHART_VERSIONS[@]}"; do
   # Only patch versions above min version variable
-  if [[ "${version}" < "${MIN_VERSION_TO_PATCH}" ]]; then
+  if (( $(echo "${version} >= ${MIN_VERSION_TO_PATCH}" | bc) )); then
     continue
   fi
 

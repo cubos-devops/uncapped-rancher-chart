@@ -1,5 +1,7 @@
 /*
 !.gitignore
+!.gitattributes
+!.github
+!README.md
 !script.sh
-!.gitlab-ci.yml
 !index.html

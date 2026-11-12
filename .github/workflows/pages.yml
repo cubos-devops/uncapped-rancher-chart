@@ -1,0 +1,50 @@
+name: Publish Helm repo to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+  # Refresh the index weekly so new upstream Rancher releases show up.
+  # Note: GitHub disables scheduled workflows after 60 days without repo activity.
+  schedule:
+    - cron: "0 6 * * 1"
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      # Same image and steps as the previous GitLab CI job (alpine + yq/curl/bash),
+      # so the busybox `bc` used by script.sh behaves exactly as before.
+      - name: Build chart repo
+        run: |
+          docker run --rm -v "$PWD":/work -w /work alpine:3 sh -c '
+            set -e
+            apk add --no-cache yq curl bash
+            bash script.sh
+            mv index.html public/
+          '
+
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: public
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v5
